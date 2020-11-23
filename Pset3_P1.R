@@ -74,7 +74,10 @@ AMD_weight <- 12000*data_task1["2020-09-30", "AMD_PX"]/(12000*data_task1["2020-0
 WMT_weight <- 3500*data_task1["2020-09-30", "WMT_PX"]/(12000*data_task1["2020-09-30", "AMD_PX"]+3500*data_task1["2020-09-30", "WMT_PX"])
 endowment_beta <- AMD_weight*AMD$coefficients[2]+WMT_weight*Walmart$coefficients[2]              
 
-market_weight <- endowment_beta/(endowment_beta-1)
+## since beta is positive we most likely need to short the market to bring down beta
+endowment_weight <- (1/(endowment_beta+1))
+market_weight <- -(1-endowment_weight)
+risk_free_weight <- 1-endowment_weight-market_weight
 
 ## d)
 ## assuming the same beta as above
