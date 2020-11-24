@@ -36,7 +36,6 @@ Maersk <- lm(formula = excess_return_df$Maersk_PX~excess_return_df$OMXC25_PX, da
 RWE <- lm(formula = excess_return_df$RWE_PX~excess_return_df$DAX30_PX, data = excess_return_df)
 Walmart <- lm(formula = excess_return_df$WMT_PX~excess_return_df$SPX_PX, data = excess_return_df)
 
-
 ## b)
 ## Since SML is just a line we only need 2 points: risk-free asset and market portfolio
 SML_slope <- mean(return_df$SPX_PX, na.rm = T)/(1-0)
@@ -75,14 +74,14 @@ WMT_weight <- 3500*data_task1["2020-09-30", "WMT_PX"]/(12000*data_task1["2020-09
 endowment_beta <- AMD_weight*AMD$coefficients[2]+WMT_weight*Walmart$coefficients[2]              
 
 ## since beta is positive we most likely need to short the market to bring down beta
-endowment_weight <- (1/(endowment_beta+1))
-market_weight <- -(1-endowment_weight)
+endowment_weight <- 1
+market_weight <- -(endowment_beta)
 risk_free_weight <- 1-endowment_weight-market_weight
 
 ## d)
 ## assuming the same beta as above
-expected_boeing <- c(Boeing$coefficients[2]*(0.05-0.001/12), Boeing$coefficients[2]*(-0.12-0.001/12))
-price_boeing <- c((1+(expected_boeing[1]+(0.001/12)))*data_task1["2020-09-30", "BA_PX"], (1+(expected_boeing[2]+(0.001/12)))*data_task1["2020-09-30", "BA_PX"])
+expected_boeing <- c(Boeing$coefficients[2]*(0.05-0.001/4), Boeing$coefficients[2]*(-0.12-0.001/4))#need to take risk-free rate divided by 4 since the expected return is for 3-months
+price_boeing <- c((1+(expected_boeing[1]+(0.001/4)))*data_task1["2020-09-30", "BA_PX"], (1+(expected_boeing[2]+(0.001/4)))*data_task1["2020-09-30", "BA_PX"])
 
-expected_AMD <- c(AMD$coefficients[2]*(0.05-0.001/12), AMD$coefficients[2]*(-0.12-0.001/12))
-price_AMD <- c((1+(expected_AMD[1]+(0.001/12)))*data_task1["2020-09-30", "AMD_PX"], (1+(expected_AMD[2]+(0.001/12)))*data_task1["2020-09-30", "AMD_PX"])
+expected_AMD <- c(AMD$coefficients[2]*(0.05-0.001/4), AMD$coefficients[2]*(-0.12-0.001/4))
+price_AMD <- c((1+(expected_AMD[1]+(0.001/4)))*data_task1["2020-09-30", "AMD_PX"], (1+(expected_AMD[2]+(0.001/4)))*data_task1["2020-09-30", "AMD_PX"])
